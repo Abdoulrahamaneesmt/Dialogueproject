@@ -17,7 +17,8 @@ export class MovieService {
   getUsers() {
     const headers= new HttpHeaders();
     headers.append('Content-type','multipart/from-data');
-    return this.http.get('https://dialoguessd.herokuapp.com/api/type_numero', {headers:headers});
+    return this.http.get('https://dialoguessd.herokuapp.com/api/type_numero/id', {headers:headers});
   
   }
+  
   }

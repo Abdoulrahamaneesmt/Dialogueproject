@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Info Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+      <ion-card-title>{{info.info_title}}</ion-card-title>
+      <button ion-button color="secondary" (click)="callNow(info.info_description)">{{info.info_title}}
+        <ion-icon name="call"></ion-icon>
+      </button>    
+</ion-content>

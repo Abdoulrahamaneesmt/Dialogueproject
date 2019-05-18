@@ -2,22 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController, LoadingController, NavController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { Http,Headers } from '@angular/http';
 import { MovieService } from '../services/movie.service';
+import { HTTP } from '@ionic-native/http/ngx';
+import { HttpHeaders } from '@angular/common/http';
+import { RequestOptions } from '@angular/http';
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page  {
-  requestObject:any=null;
-  data1: any;
-  data2: any;
-  data3: any;
-  data4: any;
-
   users: any;
   constructor(private route: ActivatedRoute, 
    public router: Router,  public httpClient: HttpClient,
+     public Http: HTTP,
    public alertController: AlertController,
    public movieService:MovieService) {
     /*this.ref.on('value', resp => {
@@ -52,13 +51,13 @@ export class Tab3Page  {
      headers.append('content-type','application/json');
   return this.http.get('https://magint.herokuapp.com/menu/plat/all',{headers:headers});}*/
   getUsers() {
-    this.movieService.getUsers().subscribe(data => {
-      console.log(data)
-      this.users=data;
+    this.movieService.getUsers().subscribe(events => {
+      console.log(events)
+      this.users=events;
+      console.log(this.users)
     });
   }
- 
- 
+  
   /*edit(key) {
     this.router.navigate(['/edit/'+key]);
   }
