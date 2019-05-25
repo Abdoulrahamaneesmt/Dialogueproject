@@ -1,50 +1,91 @@
-import { Component, OnInit } from '@angular/core';
-import { AlertController, LoadingController, NavController } from '@ionic/angular';
-import { Router, ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { MovieService } from '../services/movie.service';
-import { HTTP } from '@ionic-native/http/ngx';
+import {Component, OnInit} from '@angular/core';
+import {AlertController, LoadingController, NavController} from '@ionic/angular';
+import {Router, ActivatedRoute} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {HTTP} from '@ionic-native/http/ngx';
+import {ApisService} from '../services/apis.service';
 
 @Component({
-  selector: 'app-tab3',
-  templateUrl: 'tab3.page.html',
-  styleUrls: ['tab3.page.scss']
+    selector: 'app-tab3',
+    templateUrl: 'tab3.page.html',
+    styleUrls: ['tab3.page.scss']
 })
-export class Tab3Page  {
-  operateurs: any;
-  type_numero:any;
-  numero:any;
-  data1: any;
-  data2: any;
-  data3: any;
+export class Tab3Page implements OnInit {
 
-  constructor(private route: ActivatedRoute, 
-   public router: Router,  public httpClient: HttpClient,
-     public Http: HTTP,public loadingController: LoadingController,
-   public alertController: AlertController,
-   public movieService:MovieService) {
-   
-  //this.getUsers();
-  //this.getUsers1();
-  //this.getUsers2();
-  this.getData();
-  }
-  async getData() {
-    const loading = await this.loadingController.create({
-      message: 'Loading'
-    });
-    await loading.present();
-    this.movieService.getData()
-      .subscribe(res => {
-        console.log(res);
-        this.data1 = res[0];
-        this.data2 = res[1];
-        this.data3 = res[2];
-        loading.dismiss();
-      }, err => {
-        console.log(err);
-        loading.dismiss();
-      });
-  }
- 
+    public operateurs: any;
+    public TypeNumero: any;
+    public Numero: any;
+    public idOperateur: number = null;
+    public idTypeNumero: number = null;
+    image = '../../assets/imgs/logo-orange.png';
+
+    // tslint:disable-next-line:max-line-length
+    constructor(public router: Router, public loadingController: LoadingController, public serviceApi: ApisService) {
+    }
+
+    ngOnInit(): void {
+        this.getoperateur();
+    }
+
+    async getoperateur() {
+
+        const loading = await this.loadingController.create({
+            message: 'Loading'
+        });
+        await loading.present();
+        this.serviceApi.getOperateurs().subscribe(res => {
+            this.operateurs = res;
+            loading.dismiss();
+        }, err => {
+            console.log(err);
+            loading.dismiss();
+        });
+    }
+
+    async getTypeNumero() {
+
+        const loading = await this.loadingController.create({
+            message: 'Loading'
+        });
+        await loading.present();
+        this.serviceApi.getTypeNumero().subscribe(res => {
+            this.TypeNumero = res;
+            loading.dismiss();
+        }, err => {
+            console.log(err);
+            loading.dismiss();
+        });
+    }
+    async getNumero() {
+
+        const loading = await this.loadingController.create({
+            message: 'Loading'
+        });
+        await loading.present();
+        this.serviceApi.getNumero().subscribe(res => {
+            this.Numero = res;
+            loading.dismiss();
+        }, err => {
+            console.log(err);
+            loading.dismiss();
+        });
+    }
+
+    ResetIdOperateur() {
+        if (this.idTypeNumero != null) {
+            this.idTypeNumero = null;
+        } else if (this.idOperateur != null) {
+            this.idOperateur = null;
+        }
+    }
+
+    DetailsOperateur(params) {
+        this.idOperateur = params;
+        this.getTypeNumero();
+    }
+    DetailsTypeNumero(params) {
+        this.idTypeNumero = params;
+        this.getNumero();
+    }
+
 }
