@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar>
         <ion-title>
-            Info List
+            {{titre}}
         </ion-title>
         <ion-buttons *ngIf="idOperateur != null " (click)="ResetIdOperateur()" slot="start">
             <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
@@ -16,7 +16,7 @@
     <ion-list>
 
         <div *ngIf='idOperateur == null'>
-            <ion-item *ngFor="let op of operateurs" (click)="DetailsOperateur(op.id)">
+            <ion-item *ngFor="let op of operateurs" (click)="DetailsOperateur(op)">
                 <ion-avatar item-start>
                     <img [src]="image">
                 </ion-avatar>
@@ -28,7 +28,7 @@
 
         <div *ngIf='idOperateur != null && idTypeNumero == null'>
             <div *ngFor="let Tn of TypeNumero">
-                <ion-item *ngIf='idOperateur === Tn.id_operateur' (click)="DetailsTypeNumero(Tn.id)">
+                <ion-item *ngIf='idOperateur === Tn.id_operateur' (click)="DetailsTypeNumero(Tn)">
                     <ion-avatar item-start>
                         <img [src]="image">
                     </ion-avatar>

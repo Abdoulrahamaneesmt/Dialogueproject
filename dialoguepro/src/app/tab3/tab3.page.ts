@@ -17,6 +17,9 @@ export class Tab3Page implements OnInit {
     public Numero: any;
     public idOperateur: number = null;
     public idTypeNumero: number = null;
+    public OperteursSeclect: any;
+    public typeSeclect: any;
+    public titre = 'Operateurs';
     image = '../../assets/imgs/logo-orange.png';
 
     // tslint:disable-next-line:max-line-length
@@ -74,17 +77,23 @@ export class Tab3Page implements OnInit {
     ResetIdOperateur() {
         if (this.idTypeNumero != null) {
             this.idTypeNumero = null;
+            this.titre = this.OperteursSeclect.libelle;
         } else if (this.idOperateur != null) {
             this.idOperateur = null;
+            this.titre = 'Operateurs';
         }
     }
 
     DetailsOperateur(params) {
-        this.idOperateur = params;
+        this.idOperateur = params.id;
+        this.OperteursSeclect = params;
+        this.titre = params.libelle;
         this.getTypeNumero();
     }
     DetailsTypeNumero(params) {
-        this.idTypeNumero = params;
+        this.idTypeNumero = params.id;
+        this.typeSeclect = params;
+        this.titre = params.libelle;
         this.getNumero();
     }
 
