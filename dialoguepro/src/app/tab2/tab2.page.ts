@@ -11,40 +11,22 @@ import { MovieService } from '../services/movie.service';
 export class Tab2Page {
   public simInfo: any;
   public cards: any;
-  operateurs: any;
-  type_numero:any;
-  numero:any
-  constructor(public navCtrl: NavController, private sim: Sim,
-    public movieService:MovieService) {
-    //this.getSimData();
-    /*this.getUsers();
-    this.getUsers1();
-    this.getUsers2();*/
-    
+  public simdata: any;
+  constructor(public navCtrl: NavController, private sim: Sim, public movieService: MovieService) {
+    this.getSimData();
   }
- 
 
-/*
-  getUsers() {
-    this.movieService.getUsers().subscribe(events => {
-      console.log(events)
-      this.operateurs=events;
-      console.log(this.operateurs)
-    });
+  async getSimData() {
+    try {
+      const simPermission = await this.sim.requestReadPermission();
+      if (simPermission === 'OK') {
+        const simData = await this.sim.getSimInfo();
+        this.simdata = simData;
+        this.simInfo = simData;
+        this.cards = simData.cards;
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
-  getUsers1() {
-    this.movieService.getUsers().subscribe(events => {
-      console.log(events)
-      this.type_numero=events;
-      console.log(this.type_numero)
-    });
-  }
-  getUsers2() {
-    this.movieService.getUsers().subscribe(events => {
-      console.log(events)
-      this.numero=events;
-      console.log(this.numero)
-    });
-  }
-*/
 }

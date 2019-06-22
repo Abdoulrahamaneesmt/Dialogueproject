@@ -4,6 +4,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {HTTP} from '@ionic-native/http/ngx';
 import {ApisService} from '../services/apis.service';
+import {Sim} from '@ionic-native/sim/ngx';
 
 @Component({
     selector: 'app-tab3',
@@ -21,15 +22,31 @@ export class Tab3Page implements OnInit {
     public typeSeclect: any;
     public titre = 'Operateurs';
     image = '../../assets/imgs/logo-orange.png';
-
+    public simInfo: any;
+    public cards: any;
+    public simdata: any;
     // tslint:disable-next-line:max-line-length
-    constructor(public router: Router, public loadingController: LoadingController, public serviceApi: ApisService) {
+    constructor(private sim: Sim, public router: Router, public loadingController: LoadingController, public serviceApi: ApisService) {
     }
 
     ngOnInit(): void {
+        this.getSimData();
+        this.getTypeNumero();
         this.getoperateur();
     }
-
+    async getSimData() {
+        try {
+            const simPermission = await this.sim.requestReadPermission();
+            if (simPermission === 'OK') {
+                const simData = await this.sim.getSimInfo();
+                this.simdata = simData;
+                this.simInfo = simData;
+                this.cards = simData.cards;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
     async getoperateur() {
 
         const loading = await this.loadingController.create({
@@ -53,6 +70,7 @@ export class Tab3Page implements OnInit {
         await loading.present();
         this.serviceApi.getTypeNumero().subscribe(res => {
             this.TypeNumero = res;
+            this.idOperateur = null;
             loading.dismiss();
         }, err => {
             console.log(err);
@@ -77,24 +95,22 @@ export class Tab3Page implements OnInit {
     ResetIdOperateur() {
         if (this.idTypeNumero != null) {
             this.idTypeNumero = null;
+            this.idOperateur = null;
+            this.titre = 'Operateurs';
             this.titre = this.OperteursSeclect.libelle;
         } else if (this.idOperateur != null) {
             this.idOperateur = null;
-            this.titre = 'Operateurs';
         }
     }
 
-    DetailsOperateur(params) {
-        this.idOperateur = params.id;
-        this.OperteursSeclect = params;
-        this.titre = params.libelle;
-        this.getTypeNumero();
-    }
     DetailsTypeNumero(params) {
         this.idTypeNumero = params.id;
+        this.idOperateur = params.id;
         this.typeSeclect = params;
         this.titre = params.libelle;
         this.getNumero();
     }
 
+    DetailsTypeNumeros(id: any) {
+    }
 }

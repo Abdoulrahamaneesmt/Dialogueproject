@@ -3,56 +3,53 @@
         <ion-title>
             {{titre}}
         </ion-title>
-        <ion-buttons *ngIf="idOperateur != null " (click)="ResetIdOperateur()" slot="start">
+        <ion-buttons (click)="ResetIdOperateur()" *ngIf="idOperateur != null " slot="start">
             <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <div class="divSuperieur">
-
-    </div>
+        <ion-card  *ngFor= "let card of cards" >
+            <ion-card-header>
+                {{card.carrierName}}
+            </ion-card-header>
+            <ion-card-content>
+                <div *ngIf='idOperateur === null'>
+                <ion-list *ngFor="let Tn of TypeNumero">
+                    <ion-item *ngIf='card.carrierName === Tn.operateur' (click)="DetailsTypeNumero(Tn)">
+                        <ion-avatar item-start>
+                            <img [src]="image">
+                        </ion-avatar>
+                        <ion-label>
+                            <h5>{{Tn.libelle}}</h5>
+                            <p>{{Tn.detscription}}</p>
+                        </ion-label>
+                    </ion-item>
+                </ion-list>
+                </div>
+                <div *ngIf='idOperateur != null && idTypeNumero != null'>
+                    <div *ngFor="let num of Numero">
+                        <ion-item (click)="DetailsTypeNumeros(num.id)" *ngIf='idTypeNumero === num.id_type_numero'>
+                            <ion-avatar item-start>
+                                <img [src]="image">
+                            </ion-avatar>
+                            <ion-label>
+                                <h5>{{num.libelle}}</h5>
+                                <p>{{num.numero}}</p>
+                            </ion-label>
+                        </ion-item>
+                    </div>
+                </div>
+            </ion-card-content>
+        </ion-card>
     <ion-list>
 
-        <div *ngIf='idOperateur == null'>
-            <ion-item *ngFor="let op of operateurs" (click)="DetailsOperateur(op)">
-                <ion-avatar item-start>
-                    <img [src]="image">
-                </ion-avatar>
-                <ion-label>
-                    <h5>{{op.libelle}}</h5>
-                </ion-label>
-            </ion-item>
-        </div>
-
         <div *ngIf='idOperateur != null && idTypeNumero == null'>
-            <div *ngFor="let Tn of TypeNumero">
-                <ion-item *ngIf='idOperateur === Tn.id_operateur' (click)="DetailsTypeNumero(Tn)">
-                    <ion-avatar item-start>
-                        <img [src]="image">
-                    </ion-avatar>
-                    <ion-label>
-                        <h5>{{Tn.libelle}}</h5>
-                        <p>{{Tn.detscription}}</p>
-                    </ion-label>
-                </ion-item>
-            </div>
+
         </div>
 
-        <div *ngIf='idOperateur != null && idTypeNumero != null'>
-            <div *ngFor="let num of Numero">
-                <ion-item *ngIf='idTypeNumero === num.id_type_numero' (click)="DetailsTypeNumeros(num.id)">
-                    <ion-avatar item-start>
-                        <img [src]="image">
-                    </ion-avatar>
-                    <ion-label>
-                        <h5>{{num.libelle}}</h5>
-                        <p>{{num.numero}}</p>
-                    </ion-label>
-                </ion-item>
-            </div>
-        </div>
+
 
     </ion-list>
 </ion-content>
